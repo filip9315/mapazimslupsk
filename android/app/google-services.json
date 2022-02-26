@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "131937407579",
+    "firebase_url": "https://mapa-zim-slupsk.firebaseio.com",
+    "project_id": "mapa-zim-slupsk",
+    "storage_bucket": "mapa-zim-slupsk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131937407579:android:9fa93160056178d889a57e",
+        "android_client_info": {
+          "package_name": "com.filip.mapazimslupsk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "131937407579-suaa7i2b27tj74hmc9i18eqo9m8h8116.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP13gUdd7HcIv81vTl_PTGHDwyrj2z4R4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131937407579-suaa7i2b27tj74hmc9i18eqo9m8h8116.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
