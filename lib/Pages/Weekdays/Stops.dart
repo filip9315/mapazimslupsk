@@ -13,10 +13,10 @@ class _StopsPageState extends State<StopsPage> {
 
   final BannerAd myBanner = BannerAd(
     //prawdziwa
-    adUnitId: 'ca-app-pub-5463602893614505/2002992362',
+    //adUnitId: 'ca-app-pub-5463602893614505/2002992362',
 
     //testowa:
-    //adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
 
     size: AdSize.banner,
     request: AdRequest(),
