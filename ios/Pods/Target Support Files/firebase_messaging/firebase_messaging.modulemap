@@ -1,0 +1,6 @@
+module firebase_messaging {
+  umbrella header "firebase_messaging-umbrella.h"
+
+  export *
+  module * { export * }
+}
