@@ -17,37 +17,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  final BannerAd myBanner = BannerAd(
-    //prawdziwa:
-    adUnitId: 'ca-app-pub-5463602893614505/2279336291',
-
-    //testowa:
-    //adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-
-    size: AdSize.banner,
-    request: AdRequest(),
-    listener: BannerAdListener(),
-  );
-  final BannerAdListener listener = BannerAdListener(
-    // Called when an ad is successfully received.
-    onAdLoaded: (Ad ad) => print('Ad loaded.'),
-    // Called when an ad request failed.
-    onAdFailedToLoad: (Ad ad, LoadAdError error) {
-      // Dispose the ad here to free resources.
-      ad.dispose();
-      print('Ad failed to load: $error');
-    },
-    // Called when an ad opens an overlay that covers the screen.
-    onAdOpened: (Ad ad) => print('Ad opened.'),
-    // Called when an ad removes an overlay that covers the screen.
-    onAdClosed: (Ad ad) => print('Ad closed.'),
-    // Called when an impression occurs on the ad.
-    onAdImpression: (Ad ad) => print('Ad impression.'),
-  );
-
-
-
-
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   StreamSubscription<Position> positionStream;
   double szerokosc, dlugosc, r1, r2, odleglosc, dLng, dLat, tmp;
@@ -123,15 +92,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    myBanner.load();
-    final AdWidget adWidget = AdWidget(ad: myBanner);
-
-    final Container adContainer = Container(
-      alignment: Alignment.center,
-      child: adWidget,
-      width: myBanner.size.width.toDouble(),
-      height: myBanner.size.height.toDouble(),
-    );
 
     positionStream = Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best).listen((Position position) async {
       setState(() {
@@ -229,7 +189,6 @@ class _HomePageState extends State<HomePage> {
               */
               SizedBox(height: 20,),
               Expanded(child: Container()),
-              Center(child: adContainer),
               Text('1.7.1'),
             ],
           ),
