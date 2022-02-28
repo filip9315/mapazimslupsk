@@ -160,15 +160,12 @@ class _StopsPageState extends State<StopsPage> {
                                               return Container(
                                                   height: 100.0,
                                                   width: 200.0,
-                                                  child: FlatButton(
+                                                  child: OutlinedButton(
                                                       child: Text(
                                                         sub1,
                                                         style: TextStyle(
-                                                            color:
-                                                                Colors.white),
+                                                            color: Colors.blue),
                                                       ),
-                                                      color: Color.fromARGB(
-                                                          255, 180, 180, 180),
                                                       onPressed: () {
                                                         setState(() {
                                                           numerek = index + 1;
