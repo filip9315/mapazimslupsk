@@ -161,6 +161,11 @@ class _StopsPageState extends State<StopsPage> {
                                                   height: 100.0,
                                                   width: 200.0,
                                                   child: OutlinedButton(
+                                                      style: OutlinedButton
+                                                          .styleFrom(
+                                                        padding:
+                                                            EdgeInsets.all(8),
+                                                      ),
                                                       child: Text(
                                                         sub1,
                                                         style: TextStyle(

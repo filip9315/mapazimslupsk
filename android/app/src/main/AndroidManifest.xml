@@ -6,7 +6,7 @@
     <application
         android:name="${applicationName}"
         android:label="ZIM Słupsk"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
 
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCP13gUdd7HcIv81vTl_PTGHDwyrj2z4R4"/>
