@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                 height: 20,
               ),
               Expanded(child: Container()),
-              Text('1.7.1'),
+              Text('1.7.2'),
             ],
           ),
         ),
