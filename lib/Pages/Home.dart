@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mapazimslupsk/Pages/StopsList.dart';
 
 class HomePage extends StatefulWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
@@ -200,7 +198,7 @@ class _HomePageState extends State<HomePage> {
                 height: 20,
               ),
               Expanded(child: Container()),
-              Text('1.7.2'),
+              Text('1.7.1'),
             ],
           ),
         ),
