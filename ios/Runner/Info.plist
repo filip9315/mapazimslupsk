@@ -51,6 +51,10 @@
 	<array>
 		<string>cstr6suwn9.skadnetwork</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Aplikacja będzie używać lokalizacji.</string>
+	<key>FirebaseAppdelegateProxyEnabled</key>
+	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>This app will use bluetooth</string>
 	<key>GADApplicationIdentifier</key>
