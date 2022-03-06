@@ -37,30 +37,32 @@ class _HomePageState extends State<HomePage> {
                 dLat = (sz - doc.get('loc').latitude).abs();
                 dLng = (dl - doc.get('loc').longitude).abs();
                 odleglosc = sqrt((dLat * dLat) + (dLng * dLng));
-
-                for (int i = 0; i < 4; i++) {
-                  if (odleglosc < od[i] || od[i] == 0) {
-                    //tmp2 = id[i];
-                    tmp = od[i];
-                    setState(() {
-                      id[i] = doc.get('name');
-                    });
-                    od[i] = odleglosc;
-                    if (i != 3) {
-                      od[i + 1] = tmp;
-                      //id[i + 1] = tmp2;
+                if(!id.contains(doc.get('name'))){
+                  for (int i = 0; i < 4; i++) {
+                    if (odleglosc < od[i] || od[i] == 0) {
+                      //tmp2 = id[i];
+                      tmp = od[i];
+                      setState(() {
+                        id[i] = doc.get('name');
+                      });
+                      od[i] = odleglosc;
+                      if (i != 3) {
+                        od[i + 1] = tmp;
+                        //id[i + 1] = tmp2;
+                      }
+                      for (int i2 = i + 2; i2 < 4; i2++) {
+                        tmp = od[i2];
+                        tmp2 = id[i2];
+                        od[i2] = od[i2 - 1];
+                        od[i2 - 1] = tmp;
+                        //id[i2] = id[i2 - 1];
+                        //id[i2 - 1] = tmp2;
+                      }
+                      break;
                     }
-                    for (int i2 = i + 2; i2 < 4; i2++) {
-                      tmp = od[i2];
-                      tmp2 = id[i2];
-                      od[i2] = od[i2 - 1];
-                      od[i2 - 1] = tmp;
-                      //id[i2] = id[i2 - 1];
-                      //id[i2 - 1] = tmp2;
-                    }
-                    break;
                   }
                 }
+
 
                 i3++;
               })
