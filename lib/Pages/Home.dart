@@ -175,18 +175,25 @@ class _HomePageState extends State<HomePage> {
               Container(
                 height: 275,
                 width: 200,
-                child: ListView.separated(
+                child: ListView.builder(
                   padding: const EdgeInsets.all(8),
                   itemCount: id.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      height: 50,
-                      color: Colors.amber,
-                      child: Center(child: Text(id[index].toString())),
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 2.0,
+                          ),
+                        ),
+                        child: Center(child: Text(id[index].toString())),
+                      ),
                     );
                   },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(),
                 ),
               ),
               SizedBox(height: 20),
