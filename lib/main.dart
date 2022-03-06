@@ -10,7 +10,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
 import 'package:mapazimslupsk/Pages/StopsList.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
@@ -26,22 +25,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  MobileAds.instance.initialize();
-
-  runApp(
-    Provider.value(
+  runApp(Provider.value(
       builder: (context, child) => MaterialApp(
-        routes: {
-          '/': (context) => CorePage(),
-          '/stops': (context) => StopsPage(),
-          '/stopsSat': (context) => StopsSatPage(),
-          '/stopsSun': (context) => StopsSunPage(),
-          '/map': (context) => MapPage(),
-          '/stopsList': (context) => StopsList(),
-          '/home': (context) => HomePage(),
-        },
-      )
-    )
-  );
+            routes: {
+              '/': (context) => CorePage(),
+              '/stops': (context) => StopsPage(),
+              '/stopsSat': (context) => StopsSatPage(),
+              '/stopsSun': (context) => StopsSunPage(),
+              '/map': (context) => MapPage(),
+              '/stopsList': (context) => StopsList(),
+              '/home': (context) => HomePage(),
+            },
+          )));
 }
-
