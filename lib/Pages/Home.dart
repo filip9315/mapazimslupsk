@@ -14,15 +14,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   StreamSubscription<Position> positionStream;
+
   double szerokosc, dlugosc, r1, r2, odleglosc, dLng, dLat, tmp;
   var now = DateTime.now();
-  String nazwa = 'brak';
+  String nazwa = 'brak', tmp2;
   List<int> x = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   int y;
   double i3;
   List lat = [0, 0, 0, 0];
   List lng = [0, 0, 0, 0];
-  List id = [0, 0, 0, 0];
+  List<String> id = ['', '', '', ''];
   List<double> od = [0, 0, 0, 0];
 
   void nearStops(sz, dl) {
@@ -38,20 +39,26 @@ class _HomePageState extends State<HomePage> {
                 odleglosc = sqrt((dLat * dLat) + (dLng * dLng));
 
                 for (int i = 0; i < 4; i++) {
-                  if (odleglosc <= od[i] || od[i] == 0) {
-                    setState(() {
-                      id[i] = 2;
-                    });
+                  if (odleglosc < od[i] || od[i] == 0) {
+                    //tmp2 = id[i];
                     tmp = od[i];
+                    setState(() {
+                      id[i] = doc.get('name');
+                    });
                     od[i] = odleglosc;
                     if (i != 3) {
                       od[i + 1] = tmp;
+                      //id[i + 1] = tmp2;
                     }
                     for (int i2 = i + 2; i2 < 4; i2++) {
                       tmp = od[i2];
+                      tmp2 = id[i2];
                       od[i2] = od[i2 - 1];
                       od[i2 - 1] = tmp;
+                      //id[i2] = id[i2 - 1];
+                      //id[i2 - 1] = tmp2;
                     }
+                    break;
                   }
                 }
 
@@ -159,7 +166,6 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontSize: 20),
               ),
               SizedBox(height: 20),
-              /*
               Text(
                 'Najbliższe przystanki:',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -177,11 +183,10 @@ class _HomePageState extends State<HomePage> {
                       child: Center(child: Text(id[index].toString())),
                     );
                   },
-                  separatorBuilder: (BuildContext context, int index) => const Divider(),
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(),
                 ),
               ),
-
-               */
               SizedBox(height: 20),
               /*
               OutlinedButton(
