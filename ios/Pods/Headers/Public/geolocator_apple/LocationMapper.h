@@ -1,0 +1,1 @@
+../../../../.symlinks/plugins/geolocator_apple/ios/Classes/Utils/LocationMapper.h
