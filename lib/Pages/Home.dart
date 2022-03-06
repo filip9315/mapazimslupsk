@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                 dLat = (sz - doc.get('loc').latitude).abs();
                 dLng = (dl - doc.get('loc').longitude).abs();
                 odleglosc = sqrt((dLat * dLat) + (dLng * dLng));
-                if(!id.contains(doc.get('name'))){
+                if (!id.contains(doc.get('name'))) {
                   for (int i = 0; i < 4; i++) {
                     if (odleglosc < od[i] || od[i] == 0) {
                       //tmp2 = id[i];
@@ -62,7 +62,6 @@ class _HomePageState extends State<HomePage> {
                     }
                   }
                 }
-
 
                 i3++;
               })
@@ -175,18 +174,16 @@ class _HomePageState extends State<HomePage> {
               Container(
                 height: 275,
                 width: 200,
-                child: ListView.separated(
+                child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(8),
                   itemCount: id.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      height: 50,
-                      color: Colors.amber,
-                      child: Center(child: Text(id[index].toString())),
+                    return OutlinedButton(
+                      onPressed: () {},
+                      child: Text(id[index].toString()),
                     );
                   },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(),
                 ),
               ),
               SizedBox(height: 20),
@@ -205,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                 height: 20,
               ),
               Expanded(child: Container()),
-              Text('1.7.1'),
+              Text('1.7.2'),
             ],
           ),
         ),
