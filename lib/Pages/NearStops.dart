@@ -5,13 +5,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class HomePage extends StatefulWidget {
+class NearStopsPage extends StatefulWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   @override
-  _HomePageState createState() => _HomePageState();
+  _NearStopsPageState createState() => _NearStopsPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _NearStopsPageState extends State<NearStopsPage> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   StreamSubscription<Position> positionStream;
 
@@ -154,80 +154,32 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'Witaj',
+                'Najblizsze przystanki',
                 style: TextStyle(
-                    fontSize: 42,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 8, 51, 82)),
               ),
               SizedBox(height: 5),
               Text(
-                'Codziennie nowy tekst',
-                style: TextStyle(fontSize: 18),
+                'Najbliższe przystanki:',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 30),
-              Center(
-                child: Container(
-                  height: 150,
-                  width: 340,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Color.fromARGB(255, 233, 245, 249)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Szukasz drogi?',
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 8, 51, 82))),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text('Sprawdź najblizsze\nprzystanki',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Color.fromARGB(255, 8, 51, 82)))
-                          ],
-                        ),
-                        Expanded(child: Container()),
-                        Container(
-                          height: 75,
-                          width: 75,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.white),
-                          child: TextButton.icon(
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/nearStops');
-                              },
-                              icon: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
-                                child: Icon(
-                                  Icons.arrow_forward_rounded,
-                                  size: 40,
-                                  color: Color.fromARGB(255, 8, 51, 82),
-                                ),
-                              ),
-                              label: Text('')),
-                        )
-                      ],
-                    ),
-                  ),
+              Container(
+                height: 275,
+                width: 200,
+                child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(8),
+                  itemCount: id.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return OutlinedButton(
+                      onPressed: () {},
+                      child: Text(id[index].toString()),
+                    );
+                  },
                 ),
               ),
-              SizedBox(height: 25),
-              SizedBox(
-                height: 20,
-              ),
-              Expanded(child: Container()),
-              Text('1.7.2'),
             ],
           ),
         ),

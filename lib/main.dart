@@ -3,6 +3,7 @@ import 'package:mapazimslupsk/Pages/Core.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mapazimslupsk/Pages/Home.dart';
 import 'package:mapazimslupsk/Pages/Map.dart';
+import 'package:mapazimslupsk/Pages/NearStops.dart';
 import 'package:mapazimslupsk/Pages/Weekdays/Stops.dart';
 import 'package:mapazimslupsk/Pages/Saturdays/StopsSat.dart';
 import 'package:mapazimslupsk/Pages/Sundays/StopsSun.dart';
@@ -35,6 +36,7 @@ void main() async {
               '/map': (context) => MapPage(),
               '/stopsList': (context) => StopsList(),
               '/home': (context) => HomePage(),
+              '/nearStops': (context) => NearStopsPage(),
             },
           )));
 }
