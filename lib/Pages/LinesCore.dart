@@ -16,9 +16,9 @@ class _LinesCorePageState extends State<LinesCorePage> {
       child: SafeArea(
         child: Scaffold(
           appBar: TabBar(
-              unselectedLabelColor: Color.fromARGB(255, 66, 66, 73),
-                indicatorColor: Color.fromARGB(255, 66, 66, 73),
-                labelColor: Color.fromARGB(255, 66, 66, 73),
+              unselectedLabelColor: Color.fromARGB(255, 8, 51, 82),
+                indicatorColor: Color.fromARGB(255, 8, 51, 82),
+                labelColor: Color.fromARGB(255, 8, 51, 82),
                 tabs: [
                   Tab(text: 'Dni powszednie',),
                   Tab(text: 'Soboty',),

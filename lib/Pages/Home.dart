@@ -20,130 +20,9 @@ class _HomePageState extends State<HomePage> {
   String nazwa = 'brak', tmp2;
   List<int> x = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   int y;
-  double i3;
-  List lat = [0, 0, 0, 0];
-  List lng = [0, 0, 0, 0];
-  List<String> id = ['', '', '', ''];
-  List<double> od = [0, 0, 0, 0];
-
-  void nearStops(sz, dl) {
-    i3 = 1;
-
-    FirebaseFirestore.instance
-        .collection('Przystanki')
-        .get()
-        .then((QuerySnapshot querySnapshot) => {
-              querySnapshot.docs.forEach((doc) {
-                dLat = (sz - doc.get('loc').latitude).abs();
-                dLng = (dl - doc.get('loc').longitude).abs();
-                odleglosc = sqrt((dLat * dLat) + (dLng * dLng));
-                if (!id.contains(doc.get('name'))) {
-                  for (int i = 0; i < 4; i++) {
-                    if (odleglosc < od[i] || od[i] == 0) {
-                      //tmp2 = id[i];
-                      tmp = od[i];
-                      setState(() {
-                        id[i] = doc.get('name');
-                      });
-                      od[i] = odleglosc;
-                      if (i != 3) {
-                        od[i + 1] = tmp;
-                        //id[i + 1] = tmp2;
-                      }
-                      for (int i2 = i + 2; i2 < 4; i2++) {
-                        tmp = od[i2];
-                        tmp2 = id[i2];
-                        od[i2] = od[i2 - 1];
-                        od[i2 - 1] = tmp;
-                        //id[i2] = id[i2 - 1];
-                        //id[i2 - 1] = tmp2;
-                      }
-                      break;
-                    }
-                  }
-                }
-
-                i3++;
-              })
-            });
-  }
-
-  Future<Position> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    return await Geolocator.getCurrentPosition();
-  }
 
   @override
   Widget build(BuildContext context) {
-    positionStream =
-        Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best)
-            .listen((Position position) async {
-      setState(() {
-        szerokosc = position.latitude;
-        dlugosc = position.longitude;
-      });
-      nearStops(szerokosc, dlugosc);
-    });
-
-    FirebaseFirestore.instance
-        .collection('Przystanki')
-        .get()
-        .then((QuerySnapshot querySnapshot) => {
-              querySnapshot.docs.forEach((doc) {
-                if (szerokosc >= doc.get('loc').latitude - 0.00015 &&
-                    szerokosc <= doc.get('loc').latitude + 0.00015 &&
-                    dlugosc >= doc.get('loc').longitude - 0.00015 &&
-                    dlugosc <= doc.get('loc').longitude + 0.00015) {
-                  x[int.parse(doc.id.toString())] = 1;
-                } else {
-                  x[int.parse(doc.id.toString())] = 0;
-                }
-                y = 0;
-                for (int i = 1; i < x.length; i++) {
-                  if (x[i] == 1) {
-                    y = i;
-                  }
-                }
-                if (y != 0) {
-                  FirebaseFirestore.instance
-                      .collection('Przystanki')
-                      .doc(y.toString())
-                      .get()
-                      .then((DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot.exists) {
-                      setState(() {
-                        nazwa = documentSnapshot.get('name');
-                      });
-                    }
-                  });
-                } else {
-                  setState(() {
-                    nazwa = 'brak';
-                  });
-                }
-              })
-            });
 
     return Scaffold(
       body: SafeArea(
@@ -168,13 +47,13 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 30),
               Center(
                 child: Container(
-                  height: 150,
+                  height: 120,
                   width: 340,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       color: Color.fromARGB(255, 233, 245, 249)),
                   child: Padding(
-                    padding: const EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(20),
                     child: Row(
                       children: [
                         Column(
@@ -233,14 +112,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    if (positionStream != null) {
-      positionStream.cancel();
-      positionStream = null;
-    }
-    super.dispose();
   }
 }

@@ -20,7 +20,7 @@ class _NearStopsPageState extends State<NearStopsPage> {
   String nazwa = 'brak', tmp2;
   List<int> x = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   int y;
-  double i3;
+  double i3, la, ln;
   List lat = [0, 0, 0, 0];
   List lng = [0, 0, 0, 0];
   List<String> id = ['', '', '', ''];
@@ -99,10 +99,10 @@ class _NearStopsPageState extends State<NearStopsPage> {
     positionStream =
         Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best)
             .listen((Position position) async {
-      setState(() {
+      //setState(() {
         szerokosc = position.latitude;
         dlugosc = position.longitude;
-      });
+      //});
       nearStops(szerokosc, dlugosc);
     });
 
@@ -148,34 +148,77 @@ class _NearStopsPageState extends State<NearStopsPage> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(18.0),
+          padding: const EdgeInsets.fromLTRB(8.0, 18, 8, 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'Najblizsze przystanki',
-                style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 8, 51, 82)),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: (){Navigator.pop(context);
+                        },
+                      icon: Icon(Icons.arrow_back_rounded, color: Color.fromARGB(255, 8, 51, 82),)
+                  ),
+                  SizedBox(width: 5,),
+                  Text(
+                    'Najbliższe przystanki:',
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 8, 51, 82)),
+                  ),
+                ],
               ),
-              SizedBox(height: 5),
-              Text(
-                'Najbliższe przystanki:',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+              SizedBox(height: 25),
               Container(
-                height: 275,
-                width: 200,
+                height: 400,
+                width: 340,
                 child: ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(8),
                   itemCount: id.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return OutlinedButton(
-                      onPressed: () {},
-                      child: Text(id[index].toString()),
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+                      child: Container(
+                        height: 80,
+                        width: 340,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: Color.fromARGB(255, 233, 245, 249)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                            Text(id[index], style: TextStyle(color: Color.fromARGB(255, 8, 51, 82), fontSize: 20, fontWeight: FontWeight.w300)),
+                            IconButton(
+                                onPressed: (){
+                                  FirebaseFirestore.instance
+                                      .collection('Przystanki')
+                                      .get()
+                                      .then((QuerySnapshot
+                                  querySnapshot) =>
+                                  {
+                                    querySnapshot.docs.forEach((doc) {
+                                      if (doc.get('o') == false) {
+                                        if (doc.get('name') == id[index]) {
+                                          la = doc.get('loc').latitude;
+                                          ln = doc.get('loc').longitude;
+                                          if (la != null && ln != null) {
+                                            Navigator.pushNamed(context, '/map', arguments: {'latitude': la, 'longitude': ln});
+                                          }
+                                        }
+                                      }
+                                    }),
+                                  });
+                                },
+                                icon: Icon(Icons.map_rounded, color: Color.fromARGB(255, 8, 51, 82),)
+                            )
+                          ],),
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -186,7 +229,7 @@ class _NearStopsPageState extends State<NearStopsPage> {
       ),
     );
   }
-
+  /*
   @override
   void dispose() {
     if (positionStream != null) {
@@ -195,4 +238,5 @@ class _NearStopsPageState extends State<NearStopsPage> {
     }
     super.dispose();
   }
+   */
 }

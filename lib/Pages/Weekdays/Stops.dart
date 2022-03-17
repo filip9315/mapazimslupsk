@@ -56,7 +56,7 @@ class _StopsPageState extends State<StopsPage> {
                   ),
                   Container(
                     child: FlatButton(
-                      color: Color.fromARGB(255, 51, 95, 239),
+                      color: Color.fromARGB(255, 8, 51, 82),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(9.0),
                       ),
@@ -133,7 +133,7 @@ class _StopsPageState extends State<StopsPage> {
                                                       child: Text(
                                                         sub1,
                                                         style: TextStyle(
-                                                            color: Colors.blue),
+                                                            color: Color.fromARGB(255, 8, 51, 82)),
                                                       ),
                                                       onPressed: () {
                                                         setState(() {
@@ -329,7 +329,7 @@ class _StopsPageState extends State<StopsPage> {
                                                           }),
                                                         });
                                               },
-                                              child: Text('Pokaż na mapie'),
+                                              child: Text('Pokaż na mapie', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82)),),
                                             )
                                           ],
                                         ),
@@ -461,7 +461,7 @@ class _StopsPageState extends State<StopsPage> {
                                                           }),
                                                         });
                                               },
-                                              child: Text('Pokaż na mapie'),
+                                              child: Text('Pokaż na mapie', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82)),),
                                             )
                                           ],
                                         ),

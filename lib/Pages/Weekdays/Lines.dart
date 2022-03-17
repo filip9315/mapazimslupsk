@@ -14,7 +14,7 @@ class _LinesPageState extends State<LinesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dni powszednie', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+        title: Text('Dni powszednie', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82), fontWeight: FontWeight.bold),),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -25,7 +25,7 @@ class _LinesPageState extends State<LinesPage> {
             if(!snapshot.hasData) return const Text('Loading...');
             return ListView.builder(
               physics: BouncingScrollPhysics(),
-              itemExtent: 136.0,
+              itemExtent: 60,
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index){
                 String itemTitle = snapshot.data.docs[index].get('l').toString() ?? '';
@@ -58,6 +58,57 @@ class _CardItemState extends State<CardItem> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Color.fromARGB(255, 233, 245, 249),
+        ),
+        child: Row(
+          children: [
+            SizedBox(width: 15,),
+            Text(widget.itemTitle, style: TextStyle(fontSize: 28, color: Color.fromARGB(255, 8, 51, 82)),),
+            Expanded(child: Container()),
+            TextButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+                  overlayColor: MaterialStateColor.resolveWith((states) => Colors.grey[350]),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  )
+              ),
+              onPressed: (){
+                linia = widget.x;
+                Navigator.pushNamed(context, '/stops', arguments: {'linia': linia, 'kierunek': 1});
+              },
+              child: Text(widget.kr1, style: TextStyle(color: Color.fromARGB(255, 8, 51, 82)),),
+            ),
+            SizedBox(width: 10,),
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+                overlayColor: MaterialStateColor.resolveWith((states) => Colors.grey[350]),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                )
+              ),
+              onPressed: (){
+                linia = widget.x;
+                Navigator.pushNamed(context, '/stops', arguments: {'linia': linia, 'kierunek': 2});
+              },
+              child: Text(widget.kr2, style: TextStyle(color: Color.fromARGB(255, 8, 51, 82)),),
+            ),
+            SizedBox(width: 15,),
+          ],
+        ),
+      )
+
+
+
+      /*
       child: Card(
         color: Colors.white,
         elevation: 0.0,
@@ -91,6 +142,7 @@ class _CardItemState extends State<CardItem> {
           ],
         ),
       ),
+      */
     );
   }
 }
