@@ -100,8 +100,8 @@ class _NearStopsPageState extends State<NearStopsPage> {
         Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best)
             .listen((Position position) async {
       //setState(() {
-        szerokosc = position.latitude;
-        dlugosc = position.longitude;
+      szerokosc = position.latitude;
+      dlugosc = position.longitude;
       //});
       nearStops(szerokosc, dlugosc);
     });
@@ -156,11 +156,16 @@ class _NearStopsPageState extends State<NearStopsPage> {
               Row(
                 children: [
                   IconButton(
-                      onPressed: (){Navigator.pop(context);
-                        },
-                      icon: Icon(Icons.arrow_back_rounded, color: Color.fromARGB(255, 8, 51, 82),)
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_rounded,
+                        color: Color.fromARGB(255, 8, 51, 82),
+                      )),
+                  SizedBox(
+                    width: 5,
                   ),
-                  SizedBox(width: 5,),
                   Text(
                     'Najbliższe przystanki:',
                     style: TextStyle(
@@ -191,32 +196,48 @@ class _NearStopsPageState extends State<NearStopsPage> {
                           padding: const EdgeInsets.all(24),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                            Text(id[index], style: TextStyle(color: Color.fromARGB(255, 8, 51, 82), fontSize: 20, fontWeight: FontWeight.w300)),
-                            IconButton(
-                                onPressed: (){
-                                  FirebaseFirestore.instance
-                                      .collection('Przystanki')
-                                      .get()
-                                      .then((QuerySnapshot
-                                  querySnapshot) =>
-                                  {
-                                    querySnapshot.docs.forEach((doc) {
-                                      if (doc.get('o') == false) {
-                                        if (doc.get('name') == id[index]) {
-                                          la = doc.get('loc').latitude;
-                                          ln = doc.get('loc').longitude;
-                                          if (la != null && ln != null) {
-                                            Navigator.pushNamed(context, '/map', arguments: {'latitude': la, 'longitude': ln});
-                                          }
-                                        }
-                                      }
-                                    }),
-                                  });
-                                },
-                                icon: Icon(Icons.map_rounded, color: Color.fromARGB(255, 8, 51, 82),)
-                            )
-                          ],),
+                              Text(id[index],
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 8, 51, 82),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w300)),
+                              IconButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('Przystanki')
+                                        .get()
+                                        .then((QuerySnapshot querySnapshot) => {
+                                              querySnapshot.docs.forEach((doc) {
+                                                if (doc.get('o') == false) {
+                                                  if (doc.get('name') ==
+                                                      id[index]) {
+                                                    la =
+                                                        doc.get('loc').latitude;
+                                                    ln = doc
+                                                        .get('loc')
+                                                        .longitude;
+                                                    if (la != null &&
+                                                        ln != null) {
+                                                      Navigator.pushNamed(
+                                                          context, '/map',
+                                                          arguments: {
+                                                            'latitude': la,
+                                                            'longitude': ln
+                                                          });
+                                                    }
+                                                  }
+                                                }
+                                              }),
+                                            });
+                                  },
+                                  icon: Icon(
+                                    Icons.map_rounded,
+                                    color: Color.fromARGB(255, 8, 51, 82),
+                                  ))
+                            ],
+                          ),
                         ),
                       ),
                     );

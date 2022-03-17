@@ -17,13 +17,32 @@ class _HomePageState extends State<HomePage> {
 
   double szerokosc, dlugosc, r1, r2, odleglosc, dLng, dLat, tmp;
   var now = DateTime.now();
-  String nazwa = 'brak', tmp2;
+  String nazwa = 'brak', tmp2, haslo = '';
   List<int> x = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   int y;
 
+  void getText() {
+    FirebaseFirestore.instance
+        .collection('home')
+        .doc('codzienne haslo')
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          haslo = documentSnapshot.get('x');
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    getText();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -41,7 +60,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 5),
               Text(
-                'Codziennie nowy tekst',
+                haslo,
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(height: 30),
@@ -106,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                 height: 20,
               ),
               Expanded(child: Container()),
-              Text('1.7.2'),
+              Text('1.7.3'),
             ],
           ),
         ),
