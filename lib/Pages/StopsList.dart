@@ -21,6 +21,31 @@ class _StopsListState extends State<StopsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        height: 50,
+        width: 300,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 8, 51, 82),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromARGB(100, 8, 51, 82),
+              spreadRadius: 1,
+              blurRadius: 10,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: TextButton(
+          onPressed: (){
+            Navigator.pushNamed(context, '/chooseFromMap');
+          },
+          child: Text('Wybierz z mapy', style: TextStyle(color: Colors.white),),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -32,7 +57,7 @@ class _StopsListState extends State<StopsList> {
                   height: 50,
                   child: Row(
                     children: [
-                      Text('Przystanki:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 8, 51, 82))),
+                      Text('Przystanki:', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 8, 51, 82))),
                       Expanded(child: Container(),),
                       TextButton(onPressed: (){Navigator.pop(context, 'Wybierz przystanek');}, child: Text('Anuluj', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82))))
                     ],

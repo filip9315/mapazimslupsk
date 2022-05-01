@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                 kierunek1 = 0;
                 kierunek2 = 0;
               }
-              await Future.delayed(Duration(milliseconds: 200));
+              await Future.delayed(Duration(milliseconds: 500));
             }
 
             zrobione = true;

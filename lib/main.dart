@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mapazimslupsk/Pages/ChooseFromMap.dart';
 import 'package:mapazimslupsk/Pages/Core.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mapazimslupsk/Pages/Home.dart';
@@ -37,6 +38,7 @@ void main() async {
               '/stopsList': (context) => StopsList(),
               '/home': (context) => HomePage(),
               '/nearStops': (context) => NearStopsPage(),
+              '/chooseFromMap': (context) => ChooseFromMap(),
             },
           )));
 }
