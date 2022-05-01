@@ -1,6 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+
+class ScreenArguments {
+  final String name;
+  final int id;
+
+  ScreenArguments(this.name, this.id);
+}
+
+
 class StopsList extends StatefulWidget {
   const StopsList({Key key}) : super(key: key);
 
@@ -23,9 +32,9 @@ class _StopsListState extends State<StopsList> {
                   height: 50,
                   child: Row(
                     children: [
-                      Text('Przystanki:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text('Przystanki:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 8, 51, 82))),
                       Expanded(child: Container(),),
-                      TextButton(onPressed: (){Navigator.pop(context, 'brak');}, child: Text('Powrót'))
+                      TextButton(onPressed: (){Navigator.pop(context, 'Wybierz przystanek');}, child: Text('Anuluj', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82))))
                     ],
                   ),
                 ),
@@ -42,8 +51,8 @@ class _StopsListState extends State<StopsList> {
                       itemCount: snapshot.data.docs.length,
                       itemBuilder: (context, index){
                         String itemTitle = snapshot.data.docs[index].get('name').toString() ?? '';
-                        String x = snapshot.data.docs[index].get('next');
-                        return CardItem(itemTitle: itemTitle, x: x,);
+                        int itemId = snapshot.data.docs[index].get('id');
+                        return CardItem(itemTitle: itemTitle, itemId: itemId,);
                       }
                     );
                   }
@@ -59,8 +68,8 @@ class _StopsListState extends State<StopsList> {
 
 class CardItem extends StatefulWidget {
   String itemTitle;
-  String x;
-  CardItem({ this.itemTitle, this.x });
+  int itemId;
+  CardItem({ this.itemTitle, this.itemId });
 
   @override
   _CardItemState createState() => _CardItemState();
@@ -80,14 +89,14 @@ class _CardItemState extends State<CardItem> {
         child: InkWell(
           splashColor: Colors.black.withAlpha(30),
           onTap: () {
-            Navigator.pop(context, widget.itemTitle + ':' + widget.x);
+            Navigator.pop(context, ScreenArguments(widget.itemTitle, widget.itemId));
           },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ListTile(
-                title: Text(widget.itemTitle, style: TextStyle(fontSize: 18, color: Colors.black),),
-                subtitle: Text('Nast. przystanek: ' + widget.x),
+                title: Text(widget.itemTitle, style: TextStyle(fontSize: 18, color: Color.fromARGB(255, 8, 51, 82)),),
+                subtitle: Text(widget.itemId.toString(), style: TextStyle(fontSize: 12, color: Colors.black),),
               ),
             ],
           ),

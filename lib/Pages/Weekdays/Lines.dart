@@ -68,8 +68,32 @@ class _CardItemState extends State<CardItem> {
             SizedBox(width: 15,),
             Text(widget.itemTitle, style: TextStyle(fontSize: 28, color: Color.fromARGB(255, 8, 51, 82)),),
             Expanded(child: Container()),
-            TextButton(
-              style: ButtonStyle(
+            Container(
+              width: 120,
+              height: 37,
+              child: TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+                    overlayColor: MaterialStateColor.resolveWith((states) => Colors.grey[350]),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    )
+                ),
+                onPressed: (){
+                  linia = widget.x;
+                  Navigator.pushNamed(context, '/stops', arguments: {'linia': linia, 'kierunek': 1});
+                },
+                child: Text(widget.kr1, style: TextStyle(color: Color.fromARGB(255, 8, 51, 82)),),
+              ),
+            ),
+            SizedBox(width: 10,),
+            Container(
+              width: 120,
+              height: 37,
+              child: TextButton(
+                style: ButtonStyle(
                   backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
                   overlayColor: MaterialStateColor.resolveWith((states) => Colors.grey[350]),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -77,72 +101,18 @@ class _CardItemState extends State<CardItem> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   )
+                ),
+                onPressed: (){
+                  linia = widget.x;
+                  Navigator.pushNamed(context, '/stops', arguments: {'linia': linia, 'kierunek': 2});
+                },
+                child: Text(widget.kr2, style: TextStyle(color: Color.fromARGB(255, 8, 51, 82)),),
               ),
-              onPressed: (){
-                linia = widget.x;
-                Navigator.pushNamed(context, '/stops', arguments: {'linia': linia, 'kierunek': 1});
-              },
-              child: Text(widget.kr1, style: TextStyle(color: Color.fromARGB(255, 8, 51, 82)),),
             ),
-            SizedBox(width: 10,),
-            TextButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
-                overlayColor: MaterialStateColor.resolveWith((states) => Colors.grey[350]),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                )
-              ),
-              onPressed: (){
-                linia = widget.x;
-                Navigator.pushNamed(context, '/stops', arguments: {'linia': linia, 'kierunek': 2});
-              },
-              child: Text(widget.kr2, style: TextStyle(color: Color.fromARGB(255, 8, 51, 82)),),
-            ),
-            SizedBox(width: 15,),
+            SizedBox(width: 8),
           ],
         ),
       )
-
-
-
-      /*
-      child: Card(
-        color: Colors.white,
-        elevation: 0.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.0)),
-        child: Column(
-          children: [
-            ListTile(
-              title: Text(widget.itemTitle, style: TextStyle(fontSize: 38, color: Colors.black),),
-            ),
-            ButtonBar(
-              children: [
-                FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),),
-                  splashColor: Color.fromARGB(100, 180, 180, 180),
-                  onPressed: (){
-                    linia = widget.x;
-                    Navigator.pushNamed(context, '/stops', arguments: {'linia': linia, 'kierunek': 1});
-                  },
-                  child: Text(widget.kr1, style: TextStyle(color: Colors.black54),),
-                ),
-                FlatButton(
-                  onPressed: (){
-                    linia = widget.x;
-                    Navigator.pushNamed(context, '/stops', arguments: {'linia': linia, 'kierunek': 2});
-                  },
-                  child: Text(widget.kr2, style: TextStyle(color: Colors.black54)),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-      */
     );
   }
 }

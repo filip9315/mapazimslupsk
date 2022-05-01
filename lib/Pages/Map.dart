@@ -33,20 +33,21 @@ class _MapPageState extends State<MapPage> {
       querySnapshot.docs.forEach((doc) {
         x++;
         nazwa = doc.get('name');
-        punkt = doc.get('loc');
-        _add(nazwa, punkt);
+        lat = doc.get("lat");
+        lng = doc.get("lng");
+        _add(nazwa, lat, lng);
       }),
     });
   }
 
-  void _add(nazwa, punkt) {
+  void _add(nazwa, lat, lng) {
     var markerIdVal = nazwa;
     final MarkerId markerId = MarkerId(markerIdVal);
 
     // creating a new MARKER
     final Marker marker = Marker(
       markerId: markerId,
-      position: LatLng(punkt.latitude, punkt.longitude),
+      position: LatLng(lat, lng),
       infoWindow: InfoWindow(title: markerIdVal),
     );
 

@@ -34,8 +34,8 @@ class _NearStopsPageState extends State<NearStopsPage> {
         .get()
         .then((QuerySnapshot querySnapshot) => {
               querySnapshot.docs.forEach((doc) {
-                dLat = (sz - doc.get('loc').latitude).abs();
-                dLng = (dl - doc.get('loc').longitude).abs();
+                dLat = (sz - doc.get('lat')).abs();
+                dLng = (dl - doc.get('lng')).abs();
                 odleglosc = sqrt((dLat * dLat) + (dLng * dLng));
                 if (!id.contains(doc.get('name'))) {
                   for (int i = 0; i < 4; i++) {
@@ -111,10 +111,10 @@ class _NearStopsPageState extends State<NearStopsPage> {
         .get()
         .then((QuerySnapshot querySnapshot) => {
               querySnapshot.docs.forEach((doc) {
-                if (szerokosc >= doc.get('loc').latitude - 0.00015 &&
-                    szerokosc <= doc.get('loc').latitude + 0.00015 &&
-                    dlugosc >= doc.get('loc').longitude - 0.00015 &&
-                    dlugosc <= doc.get('loc').longitude + 0.00015) {
+                if (szerokosc >= doc.get('lat') - 0.00015 &&
+                    szerokosc <= doc.get('lat') + 0.00015 &&
+                    dlugosc >= doc.get('lng') - 0.00015 &&
+                    dlugosc <= doc.get('lng') + 0.00015) {
                   x[int.parse(doc.id.toString())] = 1;
                 } else {
                   x[int.parse(doc.id.toString())] = 0;
@@ -177,7 +177,7 @@ class _NearStopsPageState extends State<NearStopsPage> {
               ),
               SizedBox(height: 25),
               Container(
-                height: 400,
+                height: 500,
                 width: 340,
                 child: ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
@@ -187,7 +187,7 @@ class _NearStopsPageState extends State<NearStopsPage> {
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
                       child: Container(
-                        height: 80,
+                        height: 100,
                         width: 340,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(25),
@@ -201,7 +201,7 @@ class _NearStopsPageState extends State<NearStopsPage> {
                               Text(id[index],
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 8, 51, 82),
-                                      fontSize: 20,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w300)),
                               IconButton(
                                   onPressed: () {
@@ -210,23 +210,17 @@ class _NearStopsPageState extends State<NearStopsPage> {
                                         .get()
                                         .then((QuerySnapshot querySnapshot) => {
                                               querySnapshot.docs.forEach((doc) {
-                                                if (doc.get('o') == false) {
-                                                  if (doc.get('name') ==
-                                                      id[index]) {
-                                                    la =
-                                                        doc.get('loc').latitude;
-                                                    ln = doc
-                                                        .get('loc')
-                                                        .longitude;
-                                                    if (la != null &&
-                                                        ln != null) {
-                                                      Navigator.pushNamed(
-                                                          context, '/map',
-                                                          arguments: {
-                                                            'latitude': la,
-                                                            'longitude': ln
-                                                          });
-                                                    }
+                                                if (doc.get('name') == id[index]) {
+                                                  la = doc.get('lat');
+                                                  ln = doc.get('lng');
+                                                  if (la != null &&
+                                                      ln != null) {
+                                                    Navigator.pushNamed(
+                                                        context, '/map',
+                                                        arguments: {
+                                                          'latitude': la,
+                                                          'longitude': ln
+                                                        });
                                                   }
                                                 }
                                               }),
