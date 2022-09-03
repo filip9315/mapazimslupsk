@@ -1,6 +1,12 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
+
+import '../../ad_state.dart';
 
 class StopsPage extends StatefulWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
@@ -18,11 +24,31 @@ class _StopsPageState extends State<StopsPage> {
   int kurs;
   int czasOdzyskany;
   bool ograniczony;
-  int numerek;
+  int numerek = 1;
   int i = 0;
   String nrkurs = '';
   double lat;
   double lng;
+
+  BannerAd banner;
+  bool _loaded = false;
+
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    final adState = Provider.of<AdState>(context);
+    adState.initialization.then((status){
+      setState(() {
+        banner = BannerAd(
+          adUnitId: adState.bannerAdUnitId,
+          size: AdSize.banner,
+          request: AdRequest(),
+          listener: adState.adListener,
+        )..load();
+        _loaded = true;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +194,29 @@ class _StopsPageState extends State<StopsPage> {
                         }
                       }
 
-                      if (index == 10) {
+                      if(czyOgraniczony){
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
+                          child: Container(
+                            height: 70,
+                            width: 340,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(itemTitle + ' (' + id + ')', style: TextStyle(fontSize: 15, color: Colors.black45)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }else{
                         return Padding(
                           padding: const EdgeInsets.fromLTRB(
                               16.0, 8.0, 16.0, 0.0),
@@ -221,88 +269,16 @@ class _StopsPageState extends State<StopsPage> {
                             ),
                           ),
                         );
-                      } else {
-                        if(czyOgraniczony){
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
-                            child: Container(
-                              height: 70,
-                              width: 340,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(itemTitle + ' (' + id + ')', style: TextStyle(fontSize: 15, color: Colors.black45)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        }else{
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                16.0, 8.0, 16.0, 0.0),
-                            child: Container(
-                              height: 80,
-                              width: 340,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(itemTitle, style: TextStyle(fontSize: 15, color: Color.fromARGB(255, 8, 51, 82), fontWeight: FontWeight.w500)),
-                                            SizedBox(height: 3,),
-                                            Row(
-                                              children: [
-                                                Text(sub, style: TextStyle(fontSize: 15, color: Color.fromARGB(255, 8, 51, 82))),
-                                                SizedBox(width: 12,),
-                                                Text('(' + id + ')', style: TextStyle(fontSize: 15, color: Colors.black45)),
-                                              ],
-                                            ),
-                                          ]
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          FirebaseFirestore.instance.collection('Przystanki').get().then((QuerySnapshot querySnapshot) => {querySnapshot.docs.forEach((doc) {
-                                            if (doc.get('id').toString() == itemTitle) {
-                                              lat = doc.get('loc').latitude;
-                                              lng = doc.get('loc').longitude;
-                                              if (lat != null && lng != null) {
-                                                Navigator.pushNamed(context, '/map', arguments: {'latitude': lat, 'longitude': lng});
-                                              }
-                                            }
-                                          }),
-                                          });
-                                        },
-                                        splashRadius: 20,
-                                        icon: Icon(Icons.map_rounded),
-                                      )
-                                    ]
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-
                       }
+
+
                     });
                 }),
             ),
+            if (banner != null && _loaded)
+              SizedBox (height:50, child: AdWidget(ad: banner))
+            else
+              const SizedBox(height: 50),
           ],
         ),
       ),

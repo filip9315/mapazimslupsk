@@ -11,7 +11,9 @@ import 'package:mapazimslupsk/Pages/Sundays/StopsSun.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
-import 'package:mapazimslupsk/Pages/StopsList.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import 'ad_state.dart';
 
 final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
@@ -24,8 +26,10 @@ String defaultNameExtractor(RouteSettings settings) => settings.name;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  final initFuture = MobileAds.instance.initialize();
+  final adState = AdState(initFuture);
 
   runApp(Provider.value(
       builder: (context, child) => MaterialApp(
@@ -35,10 +39,10 @@ void main() async {
               '/stopsSat': (context) => StopsSatPage(),
               '/stopsSun': (context) => StopsSunPage(),
               '/map': (context) => MapPage(),
-              '/stopsList': (context) => StopsList(),
               '/home': (context) => HomePage(),
               '/nearStops': (context) => NearStopsPage(),
               '/chooseFromMap': (context) => ChooseFromMap(),
             },
-          )));
+          ),
+    value: adState,));
 }

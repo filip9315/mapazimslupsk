@@ -187,7 +187,7 @@ class _NearStopsPageState extends State<NearStopsPage> {
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
                       child: Container(
-                        height: 100,
+                        height: 80,
                         width: 340,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(25),
@@ -198,11 +198,16 @@ class _NearStopsPageState extends State<NearStopsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(id[index],
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 8, 51, 82),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w300)),
+                              Expanded(
+                                child: Container(
+                                  child: Text(id[index],
+                                      style: TextStyle(
+                                          color: Color.fromARGB(255, 8, 51, 82),
+                                          fontSize: 20,
+                                          overflow: TextOverflow.ellipsis,
+                                          fontWeight: FontWeight.w500)),
+                                ),
+                              ),
                               IconButton(
                                   onPressed: () {
                                     FirebaseFirestore.instance

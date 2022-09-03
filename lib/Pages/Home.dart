@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mapazimslupsk/Pages/StopsList.dart';
+import 'package:mapazimslupsk/Pages/ChooseFromMap.dart';
 
 class HomePage extends StatefulWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
@@ -123,7 +124,6 @@ class _HomePageState extends State<HomePage> {
               }
               await Future.delayed(Duration(milliseconds: 500));
             }
-
             zrobione = true;
           }
         }),
@@ -141,6 +141,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+      statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark));
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -247,7 +253,7 @@ class _HomePageState extends State<HomePage> {
                                 onPressed: () async {
                                   final result = await Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const StopsList()),
+                                    MaterialPageRoute(builder: (context) => ChooseFromMap()),
                                   );
                                   setState(() {
                                     przystanek1 = result.name;
@@ -266,7 +272,7 @@ class _HomePageState extends State<HomePage> {
                                 onPressed: () async {
                                   final result = await Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const StopsList()),
+                                    MaterialPageRoute(builder: (context) => ChooseFromMap()),
                                   );
                                   setState(() {
                                     przystanek2 = result.name;
@@ -283,9 +289,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              SizedBox(height: 25,),
+              //Text('Sprawdź najbliższe odjazdy'),
 
               Expanded(child: Container()),
-              Text('1.7.5'),
+              Text('1.7.7a'),
             ],
           ),
         ),

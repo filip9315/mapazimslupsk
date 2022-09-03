@@ -3,7 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'StopsList.dart';
+class ScreenArguments {
+  final String name;
+  final int id;
+
+  ScreenArguments(this.name, this.id);
+}
 
 class ChooseFromMap extends StatefulWidget {
 
@@ -45,14 +50,14 @@ class _ChooseFromMapState extends State<ChooseFromMap> {
   }
 
   void _add(nazwa, lat, lng, id) {
-    var markerIdVal = nazwa;
+    var markerIdVal = id.toString();
     final MarkerId markerId = MarkerId(markerIdVal);
     int ID = id;
 
     final Marker marker = Marker(
       markerId: markerId,
       position: LatLng(lat, lng),
-      infoWindow: InfoWindow(title: markerIdVal),
+      infoWindow: InfoWindow(title: nazwa),
       onTap: (){
         showModalBottomSheet(
           shape: RoundedRectangleBorder(
@@ -78,7 +83,7 @@ class _ChooseFromMapState extends State<ChooseFromMap> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20,),
-                      Text(markerIdVal, style: TextStyle(color: Color.fromARGB(255, 8, 51, 82), fontSize: 24, fontWeight: FontWeight.w400), overflow: TextOverflow.ellipsis,),
+                      Text(nazwa, style: TextStyle(color: Color.fromARGB(255, 8, 51, 82), fontSize: 24, fontWeight: FontWeight.w400), overflow: TextOverflow.fade,),
                       Expanded(child: SizedBox()),
                       Container(
                         height: 50,
@@ -101,8 +106,7 @@ class _ChooseFromMapState extends State<ChooseFromMap> {
                           onPressed: (){
                             Navigator.of(context)
                               ..pop()
-                              ..pop()
-                              ..pop(ScreenArguments(markerIdVal, ID));
+                              ..pop(ScreenArguments(nazwa, ID));
                           },
                           child: Text('Wybierz', style: TextStyle(color: Colors.white),),
                         ),

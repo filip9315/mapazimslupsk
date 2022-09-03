@@ -24,7 +24,7 @@ class _MapPageState extends State<MapPage> {
     super.initState();
   }
 
-  int x = 0;
+  int x = 0, id = 0;
   double lat, lng;
   GeoPoint punkt;
 
@@ -33,22 +33,23 @@ class _MapPageState extends State<MapPage> {
       querySnapshot.docs.forEach((doc) {
         x++;
         nazwa = doc.get('name');
+        id = doc.get('id');
         lat = doc.get("lat");
         lng = doc.get("lng");
-        _add(nazwa, lat, lng);
+        _add(nazwa, lat, lng, id);
       }),
     });
   }
 
-  void _add(nazwa, lat, lng) {
-    var markerIdVal = nazwa;
+  void _add(nazwa, lat, lng, id) {
+    var markerIdVal = id.toString();
     final MarkerId markerId = MarkerId(markerIdVal);
 
     // creating a new MARKER
     final Marker marker = Marker(
       markerId: markerId,
       position: LatLng(lat, lng),
-      infoWindow: InfoWindow(title: markerIdVal),
+      infoWindow: InfoWindow(title: nazwa),
     );
 
     setState(() {
