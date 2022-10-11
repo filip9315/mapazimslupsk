@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 
 class LinesPage extends StatefulWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
@@ -12,30 +13,46 @@ class _LinesPageState extends State<LinesPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark));
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dni powszednie', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82), fontWeight: FontWeight.bold),),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(child: Text('Dni powszednie', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82), fontWeight: FontWeight.bold, fontSize: 20))),
+              ],
+            ),
+            SizedBox(height: 20,),
+            Expanded(
+              child: StreamBuilder( 
+                stream: FirebaseFirestore.instance.collection('Dni powszednie').orderBy('l').snapshots(),
+                  builder: (context, snapshot) {
+                    if(!snapshot.hasData) return const Text('Loading...');
+                    return ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemExtent: 60,
+                      itemCount: snapshot.data.docs.length,
+                      itemBuilder: (context, index){
+                        String itemTitle = snapshot.data.docs[index].get('l').toString() ?? '';
+                        int x = snapshot.data.docs[index].get('l');
+                        String kr1 = snapshot.data.docs[index].get('kr1').toString() ?? '';
+                        String kr2 = snapshot.data.docs[index].get('kr2').toString() ?? '';
+                        return CardItem(itemTitle: itemTitle, kr1: kr1, kr2: kr2, x: x,);
+                      }
+                    );
+                  }),
+            ),
+          ],
+        ),
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('Dni powszednie').orderBy('l').snapshots(),
-          builder: (context, snapshot) {
-            if(!snapshot.hasData) return const Text('Loading...');
-            return ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemExtent: 60,
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index){
-                String itemTitle = snapshot.data.docs[index].get('l').toString() ?? '';
-                int x = snapshot.data.docs[index].get('l');
-                String kr1 = snapshot.data.docs[index].get('kr1').toString() ?? '';
-                String kr2 = snapshot.data.docs[index].get('kr2').toString() ?? '';
-                return CardItem(itemTitle: itemTitle, kr1: kr1, kr2: kr2, x: x,);
-              }
-            );
-          }),
       );
   }
 }

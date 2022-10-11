@@ -1,12 +1,8 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:provider/provider.dart';
 
-import '../../ad_state.dart';
 
 class StopsPage extends StatefulWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
@@ -30,25 +26,7 @@ class _StopsPageState extends State<StopsPage> {
   double lat;
   double lng;
 
-  BannerAd banner;
-  bool _loaded = false;
 
-  @override
-  void didChangeDependencies(){
-    super.didChangeDependencies();
-    final adState = Provider.of<AdState>(context);
-    adState.initialization.then((status){
-      setState(() {
-        banner = BannerAd(
-          adUnitId: adState.bannerAdUnitId,
-          size: AdSize.banner,
-          request: AdRequest(),
-          listener: adState.adListener,
-        )..load();
-        _loaded = true;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -248,6 +226,7 @@ class _StopsPageState extends State<StopsPage> {
                                           ),
                                         ]
                                     ),
+                                    /*
                                     IconButton(
                                       onPressed: () {
                                         FirebaseFirestore.instance.collection('Przystanki').get().then((QuerySnapshot querySnapshot) => {querySnapshot.docs.forEach((doc) {
@@ -261,9 +240,11 @@ class _StopsPageState extends State<StopsPage> {
                                         }),
                                         });
                                       },
-                                      splashRadius: 20,
+                                      //splashRadius: 10,
+                                      splashColor: Colors.red,
                                       icon: Icon(Icons.map_rounded),
                                     )
+                                    */
                                   ]
                               ),
                             ),
@@ -275,10 +256,6 @@ class _StopsPageState extends State<StopsPage> {
                     });
                 }),
             ),
-            if (banner != null && _loaded)
-              SizedBox (height:50, child: AdWidget(ad: banner))
-            else
-              const SizedBox(height: 50),
           ],
         ),
       ),

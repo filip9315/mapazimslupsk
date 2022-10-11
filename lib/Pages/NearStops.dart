@@ -25,6 +25,7 @@ class _NearStopsPageState extends State<NearStopsPage> {
   List lng = [0, 0, 0, 0];
   List<String> id = ['', '', '', ''];
   List<double> od = [0, 0, 0, 0];
+  bool disposed = false;
 
   void nearStops(sz, dl) {
     i3 = 1;
@@ -33,39 +34,42 @@ class _NearStopsPageState extends State<NearStopsPage> {
         .collection('Przystanki')
         .get()
         .then((QuerySnapshot querySnapshot) => {
-              querySnapshot.docs.forEach((doc) {
-                dLat = (sz - doc.get('lat')).abs();
-                dLng = (dl - doc.get('lng')).abs();
-                odleglosc = sqrt((dLat * dLat) + (dLng * dLng));
-                if (!id.contains(doc.get('name'))) {
-                  for (int i = 0; i < 4; i++) {
-                    if (odleglosc < od[i] || od[i] == 0) {
-                      //tmp2 = id[i];
-                      tmp = od[i];
-                      setState(() {
-                        id[i] = doc.get('name');
-                      });
-                      od[i] = odleglosc;
-                      if (i != 3) {
-                        od[i + 1] = tmp;
-                        //id[i + 1] = tmp2;
-                      }
-                      for (int i2 = i + 2; i2 < 4; i2++) {
-                        tmp = od[i2];
-                        tmp2 = id[i2];
-                        od[i2] = od[i2 - 1];
-                        od[i2 - 1] = tmp;
-                        //id[i2] = id[i2 - 1];
-                        //id[i2 - 1] = tmp2;
-                      }
-                      break;
+          if(!disposed){
+            querySnapshot.docs.forEach((doc) {
+              dLat = (sz - doc.get('lat')).abs();
+              dLng = (dl - doc.get('lng')).abs();
+              odleglosc = sqrt((dLat * dLat) + (dLng * dLng));
+              if (!id.contains(doc.get('name'))) {
+                for (int i = 0; i < 4; i++) {
+                  if (odleglosc < od[i] || od[i] == 0) {
+                    //tmp2 = id[i];
+                    tmp = od[i];
+                    setState(() {
+                      id[i] = doc.get('name');
+                    });
+                    od[i] = odleglosc;
+                    if (i != 3) {
+                      od[i + 1] = tmp;
+                      //id[i + 1] = tmp2;
                     }
+                    for (int i2 = i + 2; i2 < 4; i2++) {
+                      tmp = od[i2];
+                      tmp2 = id[i2];
+                      od[i2] = od[i2 - 1];
+                      od[i2 - 1] = tmp;
+                      //id[i2] = id[i2 - 1];
+                      //id[i2 - 1] = tmp2;
+                    }
+                    break;
                   }
                 }
+              }
 
-                i3++;
-              })
-            });
+              i3++;
+            })
+          }
+          }
+              );
   }
 
   Future<Position> _determinePosition() async {
@@ -249,14 +253,14 @@ class _NearStopsPageState extends State<NearStopsPage> {
       ),
     );
   }
-  /*
+
   @override
   void dispose() {
+    disposed = true;
     if (positionStream != null) {
       positionStream.cancel();
       positionStream = null;
     }
     super.dispose();
   }
-   */
 }

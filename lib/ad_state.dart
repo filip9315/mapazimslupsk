@@ -4,7 +4,11 @@ class AdState{
   Future<InitializationStatus> initialization;
   AdState(this.initialization);
 
+  //test
   String bannerAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
+
+  //real
+  //String bannerAdUnitId = 'ca-app-pub-5463602893614505/2279336291';
 
   BannerAdListener get adListener => _adListener;
 
