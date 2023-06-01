@@ -3,7 +3,7 @@ description: A new Flutter application.
 
 publish_to: 'none'
 
-version: 1.7.10+15
+version: 1.7.13+18
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -24,12 +24,12 @@ dependencies:
   firebase_analytics_web: ^0.3.0+1
   firebase_messaging: ^10.0.3
   flutter_launcher_icons: "^0.9.2"
+  unity_ads_plugin: ^0.3.7
 
 
   cupertino_icons: ^1.0.3
   geolocator: ^7.2.0+1
   flutter_blue: ^0.8.0
-  google_mobile_ads: ^2.0.1
 
 dev_dependencies:
   flutter_test:

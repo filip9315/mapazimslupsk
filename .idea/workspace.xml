@@ -12,11 +12,12 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7d4a39c-5894-4acc-a5d3-356c66d49a7d" name="Default Changelist" comment="1.7.7a">
-      <change afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
+    <list default="true" id="b7d4a39c-5894-4acc-a5d3-356c66d49a7d" name="Default Changelist" comment="1.7.10">
       <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/6.7.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/6.7.1/executionHistory/executionHistory.bin" afterDir="false" />
@@ -33,15 +34,17 @@
       <change beforePath="$PROJECT_DIR$/android/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/local.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/GeneratedPluginRegistrant.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Pages/ChooseFromMap.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Pages/ChooseFromMap.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Pages/Home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Pages/Home.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Pages/LinesCore.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Pages/LinesCore.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Pages/NearStops.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Pages/NearStops.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Pages/Map.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Pages/Map.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Pages/Weekdays/Lines.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Pages/Weekdays/Lines.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/Pages/Weekdays/Stops.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Pages/Weekdays/Stops.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ad_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ad_state.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ad_state.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
@@ -78,21 +81,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
-    <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
-    <property name="cidr.known.project.marker" value="true" />
-    <property name="dart.analysis.tool.window.force.activate" value="false" />
-    <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="SDK Location" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.24468085" />
-    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
-    <property name="show.migrate.to.gradle.popup" value="false" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/MobileApps/Flutter/mapazimslupsk/mapazimslupsk&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  }
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\mapazimslupsk\mapazimslupsk\lib" />
@@ -177,7 +174,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662192426239</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="1.7.10">
+      <created>1665488064381</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1665488064381</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -215,6 +219,7 @@
     <MESSAGE value="from PC 01.05" />
     <MESSAGE value="from PC 01.05 - 2" />
     <MESSAGE value="1.7.7a" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.7.7a" />
+    <MESSAGE value="1.7.10" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.7.10" />
   </component>
 </project>

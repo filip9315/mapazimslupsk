@@ -11,9 +11,7 @@ import 'package:mapazimslupsk/Pages/Sundays/StopsSun.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-
-import 'ad_state.dart';
+import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
 final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
@@ -28,8 +26,6 @@ void main() async {
 
   await Firebase.initializeApp();
 
-  final initFuture = MobileAds.instance.initialize();
-  final adState = AdState(initFuture);
 
   runApp(Provider.value(
       builder: (context, child) => MaterialApp(
@@ -43,6 +39,6 @@ void main() async {
               '/nearStops': (context) => NearStopsPage(),
               '/chooseFromMap': (context) => ChooseFromMap(),
             },
-          ),
-    value: adState,));
+          ), value: null,
+    ));
 }

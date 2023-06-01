@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mapazimslupsk/api_key.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -96,7 +97,7 @@ class _MapPageState extends State<MapPage> {
                 ),
                 Expanded(
                   child: GoogleMap(
-                    key: Key('AIzaSyCP13gUdd7HcIv81vTl_PTGHDwyrj2z4R4'),
+                    key: Key(map_key),
                     mapType: MapType.normal,
                     onMapCreated: (GoogleMapController controller){
                       _controller.complete(controller);
@@ -125,7 +126,7 @@ class _MapPageState extends State<MapPage> {
                 ),
                 Expanded(
                   child: GoogleMap(
-                    key: Key('AIzaSyCP13gUdd7HcIv81vTl_PTGHDwyrj2z4R4'),
+                    key: Key(map_key),
                     mapType: MapType.normal,
                     onMapCreated: (GoogleMapController controller){
                       _controller.complete(controller);

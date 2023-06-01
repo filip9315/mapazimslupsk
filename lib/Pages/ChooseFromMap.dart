@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../api_key.dart';
+
 class ScreenArguments {
   final String name;
   final int id;
@@ -140,7 +142,7 @@ class _ChooseFromMapState extends State<ChooseFromMap> {
               ),
               Expanded(
                 child: GoogleMap(
-                  key: Key('AIzaSyCP13gUdd7HcIv81vTl_PTGHDwyrj2z4R4'),
+                  key: Key(map_key),
                   mapType: MapType.normal,
                   onMapCreated: (GoogleMapController controller){
                     _controller.complete(controller);
