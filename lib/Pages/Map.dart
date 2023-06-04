@@ -94,7 +94,7 @@ class _MapPageState extends State<MapPage> {
                 ),
                 Expanded(
                   child: GoogleMap(
-                    key: Key('AIzaSyCP13gUdd7HcIv81vTl_PTGHDwyrj2z4R4'),
+                    key: Key(api_key),
                     mapType: MapType.normal,
                     onMapCreated: (GoogleMapController controller){
                       _controller.complete(controller);
@@ -120,7 +120,7 @@ class _MapPageState extends State<MapPage> {
                 ),
                 Expanded(
                   child: GoogleMap(
-                    key: Key('AIzaSyCP13gUdd7HcIv81vTl_PTGHDwyrj2z4R4'),
+                    key: Key(api_key),
                     mapType: MapType.normal,
                     onMapCreated: (GoogleMapController controller){
                       _controller.complete(controller);
