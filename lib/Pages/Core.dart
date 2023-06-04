@@ -15,7 +15,8 @@ class _CorePageState extends State<CorePage> {
   FirebaseAnalytics analytics = FirebaseAnalytics();
   int _currentIndex = 0;
   void _onItemTapped(int index) {
-    FirebaseAnalytics().logEvent(name: 'Tab', parameters: {'number': index.toString()});
+    FirebaseAnalytics()
+        .logEvent(name: 'Tab', parameters: {'number': index.toString()});
     setState(() {
       _currentIndex = index;
     });
@@ -30,30 +31,25 @@ class _CorePageState extends State<CorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _pages[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedFontSize: 0,
-          unselectedFontSize: 0,
-          elevation: 0.0,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.directions_bus),
-              label: ''
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.map),
-              label: ''
-            ),
-          ],
-          currentIndex: _currentIndex,
-          onTap: _onItemTapped,
-          selectedItemColor: Color.fromARGB(255, 51, 95, 239),
-        ),
-      );
+      body: _pages[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedFontSize: 0,
+        unselectedFontSize: 0,
+        elevation: 0.0,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_rounded),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.directions_bus_rounded), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.map_rounded), label: ''),
+        ],
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
+        selectedItemColor: Color.fromARGB(255, 8, 51, 82),
+      ),
+    );
   }
 }

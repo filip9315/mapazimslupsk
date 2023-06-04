@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_dartobservatory._tcp</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -39,7 +43,21 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>SKAdNetworkItems</key>
+	<array>
+		<string>cstr6suwn9.skadnetwork</string>
+	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Aplikacja będzie używać lokalizacji.</string>
+	<key>FirebaseAppdelegateProxyEnabled</key>
+	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>This app will use bluetooth</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-5463602893614505~1579790929</string>
 </dict>
 </plist>

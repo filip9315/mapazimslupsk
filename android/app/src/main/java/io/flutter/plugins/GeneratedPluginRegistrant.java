@@ -58,12 +58,12 @@ public final class GeneratedPluginRegistrant {
     try {
       flutterEngine.getPlugins().add(new io.flutter.plugins.googlemaps.GoogleMapsPlugin());
     } catch(Exception e) {
-      Log.e(TAG, "Error registering plugin google_maps_flutter, io.flutter.plugins.googlemaps.GoogleMapsPlugin", e);
+      Log.e(TAG, "Error registering plugin google_maps_flutter_android, io.flutter.plugins.googlemaps.GoogleMapsPlugin", e);
     }
     try {
-      flutterEngine.getPlugins().add(new io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin());
+      flutterEngine.getPlugins().add(new com.rebeloid.unity_ads.UnityAdsPlugin());
     } catch(Exception e) {
-      Log.e(TAG, "Error registering plugin google_mobile_ads, io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin", e);
+      Log.e(TAG, "Error registering plugin unity_ads_plugin, com.rebeloid.unity_ads.UnityAdsPlugin", e);
     }
   }
 }

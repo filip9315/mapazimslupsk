@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
+import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
 class LinesPage extends StatefulWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
@@ -12,30 +14,46 @@ class _LinesPageState extends State<LinesPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark));
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dni powszednie', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(child: Text('Dni powszednie', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82), fontWeight: FontWeight.bold, fontSize: 20))),
+              ],
+            ),
+            SizedBox(height: 20,),
+            Expanded(
+              child: StreamBuilder( 
+                stream: FirebaseFirestore.instance.collection('Dni powszednie').orderBy('l').snapshots(),
+                  builder: (context, snapshot) {
+                    if(!snapshot.hasData) return const Text('Loading...');
+                    return ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemExtent: 60,
+                      itemCount: snapshot.data.docs.length,
+                      itemBuilder: (context, index){
+                        String itemTitle = snapshot.data.docs[index].get('l').toString() ?? '';
+                        int x = snapshot.data.docs[index].get('l');
+                        String kr1 = snapshot.data.docs[index].get('kr1').toString() ?? '';
+                        String kr2 = snapshot.data.docs[index].get('kr2').toString() ?? '';
+                        return CardItem(itemTitle: itemTitle, kr1: kr1, kr2: kr2, x: x,);
+                      }
+                    );
+                  }),
+            ),
+          ],
+        ),
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('Dni powszednie').orderBy('l').snapshots(),
-          builder: (context, snapshot) {
-            if(!snapshot.hasData) return const Text('Loading...');
-            return ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemExtent: 136.0,
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index){
-                String itemTitle = snapshot.data.docs[index].get('l').toString() ?? '';
-                int x = snapshot.data.docs[index].get('l');
-                String kr1 = snapshot.data.docs[index].get('kr1').toString() ?? '';
-                String kr2 = snapshot.data.docs[index].get('kr2').toString() ?? '';
-                return CardItem(itemTitle: itemTitle, kr1: kr1, kr2: kr2, x: x,);
-              }
-            );
-          }),
       );
   }
 }
@@ -58,39 +76,61 @@ class _CardItemState extends State<CardItem> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
-      child: Card(
-        color: Colors.white,
-        elevation: 0.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.0)),
-        child: Column(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Color.fromARGB(255, 233, 245, 249),
+        ),
+        child: Row(
           children: [
-            ListTile(
-              title: Text(widget.itemTitle, style: TextStyle(fontSize: 38, color: Colors.black),),
-            ),
-            ButtonBar(
-              children: [
-                FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),),
-                  splashColor: Color.fromARGB(100, 180, 180, 180),
-                  onPressed: (){
-                    linia = widget.x;
-                    Navigator.pushNamed(context, '/stops', arguments: {'linia': linia, 'kierunek': 1});
-                  },
-                  child: Text(widget.kr1, style: TextStyle(color: Colors.black54),),
+            SizedBox(width: 15,),
+            Text(widget.itemTitle, style: TextStyle(fontSize: 28, color: Color.fromARGB(255, 8, 51, 82)),),
+            Expanded(child: Container()),
+            Container(
+              width: 120,
+              height: 37,
+              child: TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+                    overlayColor: MaterialStateColor.resolveWith((states) => Colors.grey[350]),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    )
                 ),
-                FlatButton(
-                  onPressed: (){
-                    linia = widget.x;
-                    Navigator.pushNamed(context, '/stops', arguments: {'linia': linia, 'kierunek': 2});
-                  },
-                  child: Text(widget.kr2, style: TextStyle(color: Colors.black54)),
-                )
-              ],
-            )
+                onPressed: (){
+                  linia = widget.x;
+                  Navigator.pushNamed(context, '/stops', arguments: {'linia': linia, 'kierunek': 1});
+                },
+                child: Text(widget.kr1, style: TextStyle(color: Color.fromARGB(255, 8, 51, 82)),),
+              ),
+            ),
+            SizedBox(width: 10,),
+            Container(
+              width: 120,
+              height: 37,
+              child: TextButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+                  overlayColor: MaterialStateColor.resolveWith((states) => Colors.grey[350]),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  )
+                ),
+                onPressed: (){
+                  linia = widget.x;
+                  Navigator.pushNamed(context, '/stops', arguments: {'linia': linia, 'kierunek': 2});
+                },
+                child: Text(widget.kr2, style: TextStyle(color: Color.fromARGB(255, 8, 51, 82)),),
+              ),
+            ),
+            SizedBox(width: 8),
           ],
         ),
-      ),
+      )
     );
   }
 }

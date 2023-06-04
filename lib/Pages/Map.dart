@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mapazimslupsk/api_key.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _MapPageState extends State<MapPage> {
     super.initState();
   }
 
-  int x = 0;
+  int x = 0, id = 0;
   double lat, lng;
   GeoPoint punkt;
 
@@ -33,21 +34,23 @@ class _MapPageState extends State<MapPage> {
       querySnapshot.docs.forEach((doc) {
         x++;
         nazwa = doc.get('name');
-        punkt = doc.get('loc');
-        _add(nazwa, punkt);
+        id = doc.get('id');
+        lat = doc.get("lat");
+        lng = doc.get("lng");
+        _add(nazwa, lat, lng, id);
       }),
     });
   }
 
-  void _add(nazwa, punkt) {
-    var markerIdVal = nazwa;
+  void _add(nazwa, lat, lng, id) {
+    var markerIdVal = id.toString();
     final MarkerId markerId = MarkerId(markerIdVal);
 
     // creating a new MARKER
     final Marker marker = Marker(
       markerId: markerId,
-      position: LatLng(punkt.latitude, punkt.longitude),
-      infoWindow: InfoWindow(title: markerIdVal),
+      position: LatLng(lat, lng),
+      infoWindow: InfoWindow(title: nazwa),
     );
 
     setState(() {
@@ -94,7 +97,9 @@ class _MapPageState extends State<MapPage> {
                 ),
                 Expanded(
                   child: GoogleMap(
-                    key: Key(api_key),
+
+                    key: Key(map_key),
+
                     mapType: MapType.normal,
                     onMapCreated: (GoogleMapController controller){
                       _controller.complete(controller);
@@ -102,6 +107,9 @@ class _MapPageState extends State<MapPage> {
                     initialCameraPosition: CameraPosition(target: LatLng(przystanek['latitude'], przystanek['longitude']),zoom: 17.0),
                     compassEnabled: true,
                     myLocationEnabled: true,
+                    rotateGesturesEnabled: false,
+                    zoomControlsEnabled: false,
+                    mapToolbarEnabled: false,
                     markers: Set<Marker>.of(markers.values),
                   ),
                 ),
@@ -120,7 +128,9 @@ class _MapPageState extends State<MapPage> {
                 ),
                 Expanded(
                   child: GoogleMap(
-                    key: Key(api_key),
+
+                    key: Key(map_key),
+
                     mapType: MapType.normal,
                     onMapCreated: (GoogleMapController controller){
                       _controller.complete(controller);
@@ -128,6 +138,9 @@ class _MapPageState extends State<MapPage> {
                     initialCameraPosition: CameraPosition(target: LatLng(54.464735557044776, 17.028093090979514),zoom: 14.0),
                     compassEnabled: true,
                     myLocationEnabled: true,
+                    rotateGesturesEnabled: false,
+                    zoomControlsEnabled: false,
+                    mapToolbarEnabled: false,
                     markers: Set<Marker>.of(markers.values),
                   ),
                 ),

@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:mapazimslupsk/Pages/StopsList.dart';
+import 'package:mapazimslupsk/Pages/ChooseFromMap.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
@@ -14,161 +14,140 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-
 class _HomePageState extends State<HomePage> {
-
-  final BannerAd myBanner = BannerAd(
-    //prawdziwa:
-    adUnitId: 'ca-app-pub-5463602893614505/2279336291',
-
-    //testowa:
-    //adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-
-    size: AdSize.banner,
-    request: AdRequest(),
-    listener: BannerAdListener(),
-  );
-  final BannerAdListener listener = BannerAdListener(
-    // Called when an ad is successfully received.
-    onAdLoaded: (Ad ad) => print('Ad loaded.'),
-    // Called when an ad request failed.
-    onAdFailedToLoad: (Ad ad, LoadAdError error) {
-      // Dispose the ad here to free resources.
-      ad.dispose();
-      print('Ad failed to load: $error');
-    },
-    // Called when an ad opens an overlay that covers the screen.
-    onAdOpened: (Ad ad) => print('Ad opened.'),
-    // Called when an ad removes an overlay that covers the screen.
-    onAdClosed: (Ad ad) => print('Ad closed.'),
-    // Called when an impression occurs on the ad.
-    onAdImpression: (Ad ad) => print('Ad impression.'),
-  );
-
-
-
-
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   StreamSubscription<Position> positionStream;
+
   double szerokosc, dlugosc, r1, r2, odleglosc, dLng, dLat, tmp;
   var now = DateTime.now();
-  String nazwa = 'brak';
-  List<int> x = [0,0,0,0,0,0,0,0,0,0,0,0];
-  int y;
-  double i3;
-  List lat = [0,0,0,0];
-  List lng = [0,0,0,0];
-  List id = [0,0,0,0];
-  List<double> od = [0,0,0,0];
+  String nazwa = 'brak', tmp2, haslo = '', przystanek1 = 'Wybierz przystanek', przystanek2 = 'Wybierz przystanek';
+  List<int> x = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var D = List.empty(growable: true);
+  int y, id1, id2;
 
-  void nearStops(sz, dl) {
-    i3 = 1;
-
-    FirebaseFirestore.instance.collection('Przystanki').get().then((QuerySnapshot querySnapshot) => {
-      querySnapshot.docs.forEach((doc) {
-
-        dLat = (sz - doc.get('loc').latitude).abs();
-        dLng = (dl - doc.get('loc').longitude).abs();
-        odleglosc = sqrt((dLat*dLat) + (dLng*dLng));
-
-        for(int i = 0; i < 4; i++){
-          if(odleglosc <= od[i] || od[i] == 0){
-            setState(() {
-              id[i] = 2;
-            });
-            tmp = od[i];
-            od[i] = odleglosc;
-            if(i != 3){
-              od[i+1] = tmp;
-            }
-            for(int i2 = i + 2; i2 < 4; i2++){
-              tmp = od[i2];
-              od[i2] = od[i2 - 1];
-              od[i2 - 1] = tmp;
-            }
-          }
-        }
-
-        i3++;
-
-      })
+  void getText() {
+    FirebaseFirestore.instance
+        .collection('home')
+        .doc('codzienne haslo')
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          haslo = documentSnapshot.get('x');
+        });
+      }
     });
   }
 
-  Future<Position> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  void calculateLines(){
+    var A = List.empty(growable: true);
+    var B = List.empty(growable: true);
+    var C = List.empty(growable: true);
+    setState(() {
+      D.clear();
+    });
 
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
+    String nazwa1 = '', nazwa2 = '';
+    bool zrobione = false, juz = false;
+    int indeks1 = 0, indeks2 = 0, kierunek1 = 0, kierunek2 = 0;
+
+    if(przystanek1 != 'Wybierz przystanek' && przystanek2 != 'Wybierz przystanek'){
+      FirebaseFirestore.instance.collection('Przystanki').get().then((QuerySnapshot querySnapshot) => {
+        querySnapshot.docs.forEach((doc) async {
+          
+          if(doc.get('id') == id1){
+            setState(() {
+              A = doc.get('linie');
+            });
+          }
+          if(doc.get('id') == id2){
+            setState(() {
+              B = doc.get('linie');
+            });
+          }
+          if(A.length != 0 && B.length != 0 && !zrobione){
+            print(A.length);
+            print(B.length);
+            for(int i=0; i<A.length; i++){
+              for(int j=0; j<B.length; j++){
+                if(A[i] == B[j]){
+                  C.add(A[i]);
+                }
+              }
+            }
+
+            for(int i=0; i<C.length;i++){
+              for(int j=1;j<=2;j++){
+                FirebaseFirestore.instance.collection('Dni powszednie/' + C[i].toString() + '/' + j.toString() +'/k1/p').get().then((QuerySnapshot querySnapshot) => {
+                  querySnapshot.docs.forEach((doc) async {
+
+                    if(doc.get('id') == id1.toString()){
+                      indeks1 = doc.get('l');
+                      nazwa1 = doc.get('n');
+                      kierunek1 = j;
+                    }
+
+                    if(doc.get('id') == id2.toString()){
+                      indeks2 = doc.get('l');
+                      nazwa2 = doc.get('n');
+                      kierunek2 = j;
+                    }
+                    if(indeks1 < indeks2 && indeks1 != 0 && indeks2 != 0 && kierunek1 == kierunek2 && kierunek1 != 0 && kierunek2 != 0 && !D.contains(int.parse(C[i]))){
+                      print(id1.toString());
+                      print(id2.toString());
+                      print(C[i].toString());
+                      print(nazwa1 + ': ' + indeks1.toString() + ', ' + kierunek1.toString());
+                      print(nazwa2 + ': ' + indeks2.toString() + ', ' + kierunek2.toString());
+                      print(' ');
+                      setState(() {
+                        D.add(int.parse(C[i]));
+
+                        int tmp = 0;
+                        for(int i=0;i<D.length;i++){
+                          for(int j=0;j<D.length-1;j++){
+                            if(D[j] > D[j+1]){
+                              tmp = D[j+1];
+                              D[j+1] = D[j];
+                              D[j] = tmp;
+                            }
+                          }
+                        }
+
+                      });
+
+                    }
+                  })
+                });
+                indeks1 = 0;
+                indeks2 = 0;
+                kierunek1 = 0;
+                kierunek2 = 0;
+              }
+              await Future.delayed(Duration(milliseconds: 500));
+            }
+            zrobione = true;
+          }
+        }),
+      });
+
     }
+  }
 
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
-    }
+  @override
+  void initState() {
+    super.initState();
 
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    return await Geolocator.getCurrentPosition();
+    getText();
+    calculateLines();
   }
 
   @override
   Widget build(BuildContext context) {
-    myBanner.load();
-    final AdWidget adWidget = AdWidget(ad: myBanner);
 
-    final Container adContainer = Container(
-      alignment: Alignment.center,
-      child: adWidget,
-      width: myBanner.size.width.toDouble(),
-      height: myBanner.size.height.toDouble(),
-    );
-
-    positionStream = Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best).listen((Position position) async {
-      setState(() {
-        szerokosc = position.latitude;
-        dlugosc = position.longitude;
-      });
-      nearStops(szerokosc, dlugosc);
-    });
-
-    FirebaseFirestore.instance.collection('Przystanki').get().then((QuerySnapshot querySnapshot) => {
-      querySnapshot.docs.forEach((doc) {
-        if(szerokosc >= doc.get('loc').latitude - 0.00015 && szerokosc <= doc.get('loc').latitude + 0.00015 && dlugosc >= doc.get('loc').longitude - 0.00015 && dlugosc <= doc.get('loc').longitude + 0.00015){
-          x[int.parse(doc.id.toString())] = 1;
-        }else{
-          x[int.parse(doc.id.toString())] = 0;
-        }
-        y = 0;
-        for(int i = 1; i < x.length; i++){
-          if(x[i] == 1){
-            y = i;
-          }
-        }
-        if(y != 0){
-          FirebaseFirestore.instance.collection('Przystanki').doc(y.toString()).get().then((DocumentSnapshot documentSnapshot) {
-            if (documentSnapshot.exists) {
-              setState(() {
-                nazwa = documentSnapshot.get('name');
-              });
-            }
-          });
-        }else{
-          setState(() {
-            nazwa = 'brak';
-          });
-        }
-      })
-    });
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+      statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark));
 
     return Scaffold(
       body: SafeArea(
@@ -178,72 +157,201 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              SizedBox(height: 10,),
               Text(
-                'Przystanki',
-                style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
+                'Witaj',
+                style: TextStyle(
+                    fontSize: 42,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 8, 51, 82)),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 5),
               Text(
-                'Aktualny:',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                haslo,
+                style: TextStyle(fontSize: 18),
               ),
-              Text(
-                nazwa,
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(height: 20),
-              /*
-              Text(
-                'Najbliższe przystanki:',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              Container(
-                height: 275,
-                width: 200,
-                child: ListView.separated(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: id.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      height: 50,
-                      color: Colors.amber,
-                      child: Center(child: Text(id[index].toString())),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) => const Divider(),
+              SizedBox(height: 30),
+              Center(
+                child: Container(
+                  height: 120,
+                  width: 340,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Color.fromARGB(255, 233, 245, 249)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Szukasz drogi?',
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 8, 51, 82))),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text('Sprawdź najblizsze\nprzystanki',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color.fromARGB(255, 8, 51, 82)))
+                          ],
+                        ),
+                        Expanded(child: Container()),
+                        Container(
+                          height: 75,
+                          width: 75,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white),
+                          child: TextButton.icon(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/nearStops');
+                              },
+                              icon: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                                child: Icon(
+                                  Icons.arrow_forward_rounded,
+                                  size: 40,
+                                  color: Color.fromARGB(255, 8, 51, 82),
+                                ),
+                              ),
+                              label: Text('')),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ),
-
-               */
-              SizedBox(height: 20),
-              /*
-              OutlinedButton(
-                  onPressed: () async {
-                    final result = await Navigator.pushNamed(
-                      context,
-                      '/stopsList',
-                    );
-                  },
-                  child: Text('Wybierz przystanek')
+              SizedBox(height: 25),
+              Center(
+                child: Container(
+                  height: 250,
+                  width: 340,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Zaplanuj trasę',
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 8, 51, 82)
+                          )
+                        ),
+                        SizedBox(height: 20,),
+                        Row(
+                          children: [
+                            Text('Z', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82), fontSize: 16)),
+                            Center(child: TextButton(
+                                onPressed: () async {
+                                  final result = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => ChooseFromMap()),
+                                  );
+                                  setState(() {
+                                    przystanek1 = result.name;
+                                    id1 = result.id;
+                                    calculateLines();
+                                  });
+                                },
+                                child: Text('$przystanek1', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82))))
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text('DO', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82), fontSize: 16)),
+                            Center(child: TextButton(
+                                onPressed: () async {
+                                  final result = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => ChooseFromMap()),
+                                  );
+                                  setState(() {
+                                    przystanek2 = result.name;
+                                    id2 = result.id;
+                                    calculateLines();
+                                  });
+                                }, child: Text('$przystanek2', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82))))
+                            ),
+                          ],
+                        ),
+                        LineSign(D),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              */
-              SizedBox(height: 20,),
+              SizedBox(height: 25,),
+              //Text('Sprawdź najbliższe odjazdy'),
+
               Expanded(child: Container()),
-              Center(child: adContainer),
-              Text('1.7.1'),
+              Text('1.7.13'),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+class LineSign extends StatefulWidget {
+  List D;
+
+  LineSign( this.D );
 
   @override
-  void dispose() {
-    if (positionStream != null) {
-      positionStream.cancel();
-      positionStream = null;
+  State<LineSign> createState() => _LineSignState();
+}
+
+class _LineSignState extends State<LineSign> {
+  @override
+  Widget build(BuildContext context) {
+
+    if(widget.D.length > 0){
+      return Expanded(
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.all(8),
+            itemCount: widget.D.length,
+            physics: BouncingScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              return Row(
+                children: [
+                  Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color.fromARGB(255, 8, 51, 82),
+                    ),
+                    child: Center(
+                      child: Text(widget.D[index].toString(), style: TextStyle(color: Colors.white, fontSize: 20),),
+                    ),
+                  ),
+                  SizedBox(width: 10,)
+                ],
+              );
+            }
+        ),
+      );
+    }else{
+      return Center(child: Text('Brak linii', style: TextStyle(color: Color.fromARGB(255, 8, 51, 82), fontSize: 16)));
     }
-    super.dispose();
+
+
+
+
   }
 }
+
