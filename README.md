@@ -1,16 +1,5 @@
-# mapazimslupsk
+A Flutter app with schedule for municipal public transport in a city of Słupsk in northern Poland.
 
-A new Flutter application.
+The backend for the app uses Puppeteer to scrape the schedule from the website of administration of the city and puts it into a Firestore Firebase database to be accessed by users via app from this repository.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The app can be downloaded by anyone from the Google Play Store.
