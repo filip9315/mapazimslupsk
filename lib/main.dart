@@ -6,20 +6,17 @@ import 'package:mapazimslupsk/Pages/Home.dart';
 import 'package:mapazimslupsk/Pages/Map.dart';
 import 'package:mapazimslupsk/Pages/NearStops.dart';
 import 'package:mapazimslupsk/Pages/Weekdays/Stops.dart';
-import 'package:mapazimslupsk/Pages/Saturdays/StopsSat.dart';
-import 'package:mapazimslupsk/Pages/Sundays/StopsSun.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
-import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
 final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
 FirebaseApp defaultApp = Firebase.app();
 FirebaseMessaging messaging = FirebaseMessaging.instance;
-FirebaseAnalytics analytics = FirebaseAnalytics();
+FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
-String defaultNameExtractor(RouteSettings settings) => settings.name;
+String? defaultNameExtractor(RouteSettings settings) => settings.name;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,8 +29,6 @@ void main() async {
             routes: {
               '/': (context) => CorePage(),
               '/stops': (context) => StopsPage(),
-              '/stopsSat': (context) => StopsSatPage(),
-              '/stopsSun': (context) => StopsSunPage(),
               '/map': (context) => MapPage(),
               '/home': (context) => HomePage(),
               '/nearStops': (context) => NearStopsPage(),

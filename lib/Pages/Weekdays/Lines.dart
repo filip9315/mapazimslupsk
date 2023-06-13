@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
-import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
 class LinesPage extends StatefulWidget {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
@@ -33,19 +32,19 @@ class _LinesPageState extends State<LinesPage> {
             ),
             SizedBox(height: 20,),
             Expanded(
-              child: StreamBuilder( 
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 stream: FirebaseFirestore.instance.collection('Dni powszednie').orderBy('l').snapshots(),
                   builder: (context, snapshot) {
                     if(!snapshot.hasData) return const Text('Loading...');
                     return ListView.builder(
                       physics: BouncingScrollPhysics(),
                       itemExtent: 60,
-                      itemCount: snapshot.data.docs.length,
+                      itemCount: snapshot.data?.docs.length,
                       itemBuilder: (context, index){
-                        String itemTitle = snapshot.data.docs[index].get('l').toString() ?? '';
-                        int x = snapshot.data.docs[index].get('l');
-                        String kr1 = snapshot.data.docs[index].get('kr1').toString() ?? '';
-                        String kr2 = snapshot.data.docs[index].get('kr2').toString() ?? '';
+                        String itemTitle = snapshot.data?.docs[index].get('l').toString() ?? '';
+                        int x = snapshot.data?.docs[index].get('l') ?? '';
+                        String kr1 = snapshot.data?.docs[index]['kr1'].toString() ?? '';
+                        String kr2 = snapshot.data?.docs[index].get('kr2').toString() ?? '';
                         return CardItem(itemTitle: itemTitle, kr1: kr1, kr2: kr2, x: x,);
                       }
                     );
@@ -63,7 +62,7 @@ class CardItem extends StatefulWidget {
   String kr1;
   String kr2;
   int x;
-  CardItem({ this.itemTitle, this.kr1, this.kr2, this.x });
+  CardItem({ required this.itemTitle, required this.kr1, required this.kr2, required this.x });
 
   @override
   _CardItemState createState() => _CardItemState();
@@ -92,7 +91,7 @@ class _CardItemState extends State<CardItem> {
               child: TextButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
-                    overlayColor: MaterialStateColor.resolveWith((states) => Colors.grey[350]),
+                    overlayColor: MaterialStateColor.resolveWith((states) => Colors.grey.shade300),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -113,7 +112,7 @@ class _CardItemState extends State<CardItem> {
               child: TextButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
-                  overlayColor: MaterialStateColor.resolveWith((states) => Colors.grey[350]),
+                  overlayColor: MaterialStateColor.resolveWith((states) => Colors.grey.shade300),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),

@@ -16,14 +16,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-  StreamSubscription<Position> positionStream;
+  late StreamSubscription<Position> positionStream;
 
-  double szerokosc, dlugosc, r1, r2, odleglosc, dLng, dLat, tmp;
+  late double szerokosc, dlugosc, r1, r2, odleglosc, dLng, dLat, tmp;
   var now = DateTime.now();
-  String nazwa = 'brak', tmp2, haslo = '', przystanek1 = 'Wybierz przystanek', przystanek2 = 'Wybierz przystanek';
+  late String nazwa = 'brak', tmp2, haslo = '', przystanek1 = 'Wybierz przystanek', przystanek2 = 'Wybierz przystanek';
   List<int> x = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   var D = List.empty(growable: true);
-  int y, id1, id2;
+  late int y, id1, id2;
 
   void getText() {
     FirebaseFirestore.instance
@@ -296,7 +296,7 @@ class _HomePageState extends State<HomePage> {
               //Text('Sprawdź najbliższe odjazdy'),
 
               Expanded(child: Container()),
-              Text('1.7.13'),
+              Text('1.7.14'),
             ],
           ),
         ),

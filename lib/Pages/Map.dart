@@ -13,9 +13,9 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Completer<GoogleMapController> _controller = Completer();
-  GoogleMapController mapController;
+  late GoogleMapController mapController;
 
-  String nazwa;
+  late String nazwa;
   var przystanek;
 
   @override
@@ -26,8 +26,8 @@ class _MapPageState extends State<MapPage> {
   }
 
   int x = 0, id = 0;
-  double lat, lng;
-  GeoPoint punkt;
+  late double lat, lng;
+  late GeoPoint punkt;
 
   przystanki() async {
     FirebaseFirestore.instance.collection('Przystanki').get().then((QuerySnapshot querySnapshot) => {
@@ -61,10 +61,10 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    przystanek = ModalRoute.of(context).settings.arguments;
+    przystanek = ModalRoute.of(context)?.settings.arguments;
 
     if (przystanek != null){
-      przystanek = ModalRoute.of(context).settings.arguments;
+      przystanek = ModalRoute.of(context)?.settings.arguments;
 
       return Scaffold(
           body: SafeArea(

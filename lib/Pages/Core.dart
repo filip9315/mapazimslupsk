@@ -12,11 +12,9 @@ class CorePage extends StatefulWidget {
 }
 
 class _CorePageState extends State<CorePage> {
-  FirebaseAnalytics analytics = FirebaseAnalytics();
+
   int _currentIndex = 0;
   void _onItemTapped(int index) {
-    FirebaseAnalytics()
-        .logEvent(name: 'Tab', parameters: {'number': index.toString()});
     setState(() {
       _currentIndex = index;
     });

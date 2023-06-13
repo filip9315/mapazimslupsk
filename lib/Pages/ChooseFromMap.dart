@@ -23,9 +23,9 @@ class _ChooseFromMapState extends State<ChooseFromMap> {
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Completer<GoogleMapController> _controller = Completer();
-  GoogleMapController mapController;
+  late GoogleMapController mapController;
 
-  String nazwa;
+  late String nazwa;
   var przystanek;
 
   @override
@@ -35,8 +35,8 @@ class _ChooseFromMapState extends State<ChooseFromMap> {
   }
 
   int x = 0, id = 0;
-  double lat, lng;
-  GeoPoint punkt;
+  late double lat, lng;
+  late GeoPoint punkt;
 
   przystanki() async {
     FirebaseFirestore.instance.collection('Przystanki').get().then((QuerySnapshot querySnapshot) => {

@@ -13,14 +13,14 @@ class NearStopsPage extends StatefulWidget {
 
 class _NearStopsPageState extends State<NearStopsPage> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-  StreamSubscription<Position> positionStream;
+  late StreamSubscription<Position> positionStream;
 
-  double szerokosc, dlugosc, r1, r2, odleglosc, dLng, dLat, tmp;
+  late double szerokosc, dlugosc, r1, r2, odleglosc, dLng, dLat, tmp;
   var now = DateTime.now();
-  String nazwa = 'brak', tmp2;
+  late String nazwa = 'brak', tmp2;
   List<int> x = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  int y;
-  double i3, la, ln;
+  late int y;
+  late double i3, la, ln;
   List lat = [0, 0, 0, 0];
   List lng = [0, 0, 0, 0];
   List<String> id = ['', '', '', ''];
@@ -101,7 +101,7 @@ class _NearStopsPageState extends State<NearStopsPage> {
   @override
   Widget build(BuildContext context) {
     positionStream =
-        Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.best)
+        Geolocator.getPositionStream(locationSettings: LocationSettings(accuracy: LocationAccuracy.best))
             .listen((Position position) async {
       //setState(() {
       szerokosc = position.latitude;
@@ -257,10 +257,7 @@ class _NearStopsPageState extends State<NearStopsPage> {
   @override
   void dispose() {
     disposed = true;
-    if (positionStream != null) {
-      positionStream.cancel();
-      positionStream = null;
-    }
+    positionStream.cancel();
     super.dispose();
   }
 }

@@ -11,24 +11,17 @@ class StopsPage extends StatefulWidget {
 class _StopsPageState extends State<StopsPage> {
   var linia;
   var kierunek;
-  int godzina;
-  int minuta;
-  int poczatkowy;
-  int koncowy;
-  int kurs;
-  int czasOdzyskany;
-  bool ograniczony;
+  late int godzina, minuta, poczatkowy, koncowy, kurs, ograniczony;
   int numerek = 1;
   int i = 0;
   String nrkurs = '';
-  double lat;
-  double lng;
+  late double lat, lng;
 
 
 
   @override
   Widget build(BuildContext context) {
-    linia = ModalRoute.of(context).settings.arguments;
+    linia = ModalRoute.of(context)?.settings.arguments;
 
     return Scaffold(
       body: SafeArea(
@@ -57,10 +50,12 @@ class _StopsPageState extends State<StopsPage> {
                         ''),
                   ),
                   Container(
-                    child: FlatButton(
-                      color: Color.fromARGB(255, 8, 51, 82),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(9.0),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 8, 51, 82),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9.0),
+                        ),
                       ),
                       onPressed: () {
                         showModalBottomSheet<void>(
@@ -68,7 +63,7 @@ class _StopsPageState extends State<StopsPage> {
                           builder: (BuildContext context) {
                             return Container(
                                 child: Scaffold(
-                              body: StreamBuilder(
+                              body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                                 stream: FirebaseFirestore.instance.collection('Dni powszednie/' + linia['linia'].toString() + '/' + linia['kierunek'].toString() + '/p1/godziny').orderBy('l').snapshots(),
                                 builder: (context, snapshot) {
                                   if (!snapshot.hasData)
@@ -83,10 +78,10 @@ class _StopsPageState extends State<StopsPage> {
                                         maxCrossAxisExtent: 80,
                                         childAspectRatio: 2,
                                       ),
-                                      itemCount: snapshot.data.docs.length, itemBuilder: (context, index) {
-                                        int h = snapshot.data.docs[index].get('h');
-                                        int m = snapshot.data.docs[index].get('m');
-                                        String sub1;
+                                      itemCount: snapshot.data?.docs.length, itemBuilder: (context, index) {
+                                        int h = snapshot.data?.docs[index].get('h');
+                                        int m = snapshot.data?.docs[index].get('m');
+                                        String sub1 = '';
                                         if (h < 10 && m > 9) {
                                           sub1 = '0' + h.toString() + ':' + m.toString();
                                         }
@@ -99,7 +94,6 @@ class _StopsPageState extends State<StopsPage> {
                                         if (h > 9 && m > 9) {
                                           sub1 = h.toString() + ':' + m.toString();
                                         }
-                                        int czas;
                                         return Container(
                                           height: 100.0,
                                           width: 200.0,
@@ -119,7 +113,6 @@ class _StopsPageState extends State<StopsPage> {
                                                 numerek = index + 1;
                                                 godzina = h;
                                                 minuta = m;
-                                                czasOdzyskany = czas;
                                                 nrkurs = sub1;
                                               });
                                             }));
@@ -137,24 +130,24 @@ class _StopsPageState extends State<StopsPage> {
               ),
             ),
             Expanded(
-              child: StreamBuilder(
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 stream: FirebaseFirestore.instance.collection('Dni powszednie/' + linia['linia'].toString() + '/' + linia['kierunek'].toString() + '/k' + numerek.toString() + '/p').orderBy('l').snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) return const Text('Loading...');
                   return ListView.builder(
                     physics: BouncingScrollPhysics(),
-                    itemCount: snapshot.data.docs.length,
+                    itemCount: snapshot.data?.docs.length,
                     itemBuilder: (context, index) {
-                      String itemTitle = snapshot.data.docs[index].get('n').toString() ?? '';
-                      String id = snapshot.data.docs[index].get('id').toString() ?? '0';
-                      bool czyOgraniczony = snapshot.data.docs[index].get('o');
+                      String itemTitle = snapshot.data?.docs[index].get('n').toString() ?? '';
+                      String id = snapshot.data?.docs[index].get('id').toString() ?? '0';
+                      bool czyOgraniczony = snapshot.data?.docs[index].get('o');
                       int minu;
                       int godz;
                       int minuty;
                       String sub = '';
                       if (czyOgraniczony == false) {
-                        godz = snapshot.data.docs[index].get('h');
-                        minuty = snapshot.data.docs[index].get('m');
+                        godz = snapshot.data?.docs[index].get('h');
+                        minuty = snapshot.data?.docs[index].get('m');
 
                         if (godz < 10 && minuty > 9) {
                           sub = '0' + godz.toString() + ':' + minuty.toString();
@@ -249,8 +242,6 @@ class _StopsPageState extends State<StopsPage> {
                           ),
                         );
                       }
-
-
                     });
                 }),
             ),
